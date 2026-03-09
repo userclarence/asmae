@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>For Asmae</title>
+
+<style>
+body{
+  background:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:monospace;
+}
+
+#text{
+  font-size:28px;
+  color:red;
+  text-align:center;
+  max-width:600px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="text"></div>
+
+<script>
+const message = "Dear Asmae...\n\nI just wanted to say something simple.\n\nKanbghiiik ❤️";
+let i = 0;
+
+function typeWriter(){
+  if(i < message.length){
+    document.getElementById("text").innerHTML += message.charAt(i);
+    i++;
+    setTimeout(typeWriter, 70);
+  }
+}
+
+typeWriter();
+</script>
+
+</body>
+</html>

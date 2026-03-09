@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>For Asmae</title>
+<title>The Universe Chose You</title>
 
 <style>
+
 body{
-  background:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  font-family:monospace;
+margin:0;
+background:black;
+overflow:hidden;
+font-family:monospace;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+}
+
+.star{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+border-radius:50%;
+transition:2s;
 }
 
 #text{
-  font-size:28px;
-  color:red;
-  text-align:center;
-  max-width:600px;
+position:absolute;
+font-size:32px;
+max-width:600px;
+opacity:0;
+transition:2s;
 }
-</style>
 
+</style>
 </head>
 
 <body>
@@ -28,18 +43,57 @@ body{
 <div id="text"></div>
 
 <script>
-const message = "Dear Asmae...\n\nI just wanted to say something simple.\n\nKanbghiiik ❤️";
-let i = 0;
 
-function typeWriter(){
-  if(i < message.length){
-    document.getElementById("text").innerHTML += message.charAt(i);
-    i++;
-    setTimeout(typeWriter, 70);
-  }
+let stars=[];
+
+// create stars
+for(let i=0;i<200;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.left=Math.random()*window.innerWidth+"px";
+star.style.top=Math.random()*window.innerHeight+"px";
+document.body.appendChild(star);
+stars.push(star);
 }
 
-typeWriter();
+// after 4 seconds form heart
+setTimeout(formHeart,4000);
+
+function formHeart(){
+
+for(let i=0;i<stars.length;i++){
+
+let t=i/stars.length*Math.PI*2;
+
+let x=16*Math.pow(Math.sin(t),3);
+let y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+
+x*=15;
+y*=15;
+
+stars[i].style.left=window.innerWidth/2 + x + "px";
+stars[i].style.top=window.innerHeight/2 - y + "px";
+
+}
+
+setTimeout(showMessage,3000);
+
+}
+
+function showMessage(){
+
+let text=document.getElementById("text");
+
+text.innerHTML=
+"In a universe full of stars...<br><br>"+
+"I still found the most beautiful one.<br><br>"+
+"Asmae ❤️<br><br>"+
+"Kanbghiiik";
+
+text.style.opacity=1;
+
+}
+
 </script>
 
 </body>

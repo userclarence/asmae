@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>The Universe Chose Asmae</title>
 
 <style>
@@ -63,12 +63,13 @@ body {
 
 #text {
   position: absolute;
-  bottom: 10%; 
-  width: 100%;
+  bottom: 15%; 
+  width: 90%; /* Prevents text from touching phone edges */
+  left: 5%;
   text-align: center;
-  /* Changed to a clean, normal, and bold font */
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 50px;
+  /* Automatically scales between 24px (mobile) and 50px (desktop) */
+  font-size: clamp(24px, 7vw, 50px);
   font-weight: bold;
   color: #ffdae0;
   text-shadow: 0 0 12px rgba(255, 154, 158, 0.8);
@@ -97,7 +98,8 @@ body {
 <script>
 window.onload = () => {
   let stars = []
-  const starCount = 600
+  // Slightly reduced star count so older phones don't lag
+  const starCount = 500 
 
   for(let i=0; i<starCount; i++){
     let star = document.createElement("div")
@@ -136,12 +138,17 @@ window.onload = () => {
   ]
 
   function formASMAE(){
-    let letterWidth = 22; 
-    let letterHeight = 30;
+    // DYNAMIC SCALING FOR MOBILE:
+    // This calculates the width of the screen and shrinks the letters if needed so they always fit perfectly.
+    let maxLetterWidth = (window.innerWidth * 0.9) / 28; // Max width based on screen size
+    let letterWidth = Math.min(22, maxLetterWidth); // Won't get bigger than 22px on desktop
+    let letterHeight = letterWidth * 1.36; // Keeps the letters looking tall, not squished
+    
     let totalWidth = 28 * letterWidth; 
     
     let startX = (window.innerWidth / 2) - (totalWidth / 2);
-    let startY = (window.innerHeight / 2) - 100;
+    // Pushes the name up slightly on mobile so the text fits nicely underneath
+    let startY = (window.innerHeight / 2) - (letterHeight * 3); 
 
     for(let i=0; i<letters.length; i++){
       if(stars[i]){
@@ -186,3 +193,4 @@ window.onload = () => {
 </script>
 </body>
 </html>
+

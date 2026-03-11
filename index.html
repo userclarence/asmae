@@ -1,98 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Universe Chose Asmae</title>
+
 <style>
-body{
-  margin:0;
-  background:black;
-  overflow:hidden;
-  font-family:monospace;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  text-align:center;
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #1b052c 0%, #05010a 80%, #000000 100%);
+  position: relative;
 }
 
-.star{
-  position:absolute;
-  width:3px;
-  height:3px;
-  background:white;
-  border-radius:50%;
-  transition:2s;
-  animation: twinkle 2s infinite;
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px white;
+  animation: twinkle 3s infinite;
+  transition: left 2.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              top 2.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 2.5s ease, background 2.5s ease;
 }
 
-@keyframes twinkle{
-  0%{opacity:0.3;}
-  50%{opacity:1;}
-  100%{opacity:0.3;}
+@keyframes twinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.2; transform: scale(0.8); }
 }
 
-#text{
-  position:absolute;
-  font-size:32px;
-  max-width:600px;
-  opacity:0;
-  transition:2s;
+.glowing-star {
+  background: #ff9a9e !important; 
+  box-shadow: 0 0 15px #ff9a9e, 0 0 30px #fecfef !important;
+  animation: pulseGlow 2s infinite ease-in-out !important;
+  z-index: 10;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1.2); box-shadow: 0 0 15px #ff9a9e; }
+  50% { transform: scale(1.6); box-shadow: 0 0 25px #ff9a9e, 0 0 40px #fecfef; }
+}
+
+.shooting {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(rgba(255,182,193,0.8), transparent);
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+@keyframes shoot {
+  0% { opacity: 1; transform: translate(0, 0) rotate(45deg); }
+  100% { opacity: 0; transform: translate(800px, 800px) rotate(45deg); }
+}
+
+#text {
+  position: absolute;
+  bottom: 10%; 
+  width: 100%;
+  text-align: center;
+  /* Changed to a clean, normal, and bold font */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffdae0;
+  text-shadow: 0 0 12px rgba(255, 154, 158, 0.8);
+  opacity: 0;
+  line-height: 1.4;
+  z-index: 5;
+}
+
+.cursor {
+  border-right: 4px solid #ffdae0;
+  animation: blink 1s infinite;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%, 100% { border-color: transparent }
+  50% { border-color: #ffdae0 }
 }
 </style>
 </head>
+
 <body>
 
-<div id="text">
-Dear Asmae...<br><br>
-I found the brightest star in the universe.<br><br>
-Kanbghiiik ❤️
-</div>
+<div id="text"></div>
 
 <script>
+window.onload = () => {
+  let stars = []
+  const starCount = 600
 
-// Create stars
-let stars=[];
-const starCount = 500;
-
-for(let i=0;i<starCount;i++){
-  let star=document.createElement("div");
-  star.className="star";
-  star.style.left=Math.random()*window.innerWidth+"px";
-  star.style.top=Math.random()*window.innerHeight+"px";
-  document.body.appendChild(star);
-  stars.push(star);
-}
-
-// ASMAE coordinates (approx grid points)
-const letters = [
-  // A
-  [0,4],[0,5],[1,3],[1,6],[2,2],[2,7],[3,1],[3,8],[4,0],[4,9],[2,4],[2,5],[2,6],
-  // S
-  [0,12],[0,13],[1,11],[1,14],[2,12],[2,13],[3,11],[3,14],[4,12],[4,13],
-  // M
-  [0,16],[1,16],[2,17],[3,18],[4,16],[1,19],[0,20],[1,20],[2,20],[3,20],[4,20],
-  // A
-  [0,22],[0,23],[1,21],[1,24],[2,20],[2,25],[3,19],[3,26],[4,18],[4,27],[2,22],[2,23],[2,24],
-  // E
-  [0,29],[1,29],[2,29],[3,29],[4,29],[0,30],[2,30],[4,30],[0,31],[2,31],[4,31]
-];
-
-function formASMAE(){
-  let startX = window.innerWidth/2 - 150;
-  let startY = window.innerHeight/2 - 50;
-  for(let i=0;i<letters.length;i++){
-    if(stars[i]){
-      stars[i].style.left = startX + letters[i][1]*8 + "px";
-      stars[i].style.top = startY + letters[i][0]*10 + "px";
-    }
+  for(let i=0; i<starCount; i++){
+    let star = document.createElement("div")
+    star.className = "star"
+    star.style.left = Math.random() * window.innerWidth + "px"
+    star.style.top = Math.random() * window.innerHeight + "px"
+    star.style.animationDelay = (Math.random() * 3) + "s"
+    document.body.appendChild(star)
+    stars.push(star)
   }
-  // Fade in message after forming letters
-  setTimeout(()=>{document.getElementById("text").style.opacity=1;},2000);
+
+  function shootingStar(){
+    let s = document.createElement("div")
+    s.className = "shooting"
+    s.style.left = Math.random() * window.innerWidth + "px"
+    s.style.top = Math.random() * (window.innerHeight / 2) + "px"
+    document.body.appendChild(s)
+    s.style.animation = "shoot 1.5s linear"
+    setTimeout(() => { s.remove() }, 1500)
+  }
+
+  setInterval(shootingStar, 3500)
+
+  // PERFECTED LETTER MAP
+  const letters = [
+    // A (Cols 0-4)
+    [0,2], [1,1], [1,3], [2,0], [2,1], [2,2], [2,3], [2,4], [3,0], [3,4], [4,0], [4,4],
+    // S (Cols 6-10)
+    [0,6], [0,7], [0,8], [0,9], [0,10], [1,6], [2,6], [2,7], [2,8], [2,9], [2,10], [3,10], [4,6], [4,7], [4,8], [4,9], [4,10],
+    // M (Cols 12-16)
+    [0,12], [0,16], [1,12], [1,13], [1,15], [1,16], [2,12], [2,14], [2,16], [3,12], [3,16], [4,12], [4,16],
+    // A (Cols 18-22)
+    [0,20], [1,19], [1,21], [2,18], [2,19], [2,20], [2,21], [2,22], [3,18], [3,22], [4,18], [4,22],
+    // E (Cols 24-28)
+    [0,24], [0,25], [0,26], [0,27], [0,28], [1,24], [2,24], [2,25], [2,26], [2,27], [3,24], [4,24], [4,25], [4,26], [4,27], [4,28]
+  ]
+
+  function formASMAE(){
+    let letterWidth = 22; 
+    let letterHeight = 30;
+    let totalWidth = 28 * letterWidth; 
+    
+    let startX = (window.innerWidth / 2) - (totalWidth / 2);
+    let startY = (window.innerHeight / 2) - 100;
+
+    for(let i=0; i<letters.length; i++){
+      if(stars[i]){
+        stars[i].style.left = startX + letters[i][1] * letterWidth + "px"
+        stars[i].style.top = startY + letters[i][0] * letterHeight + "px"
+        stars[i].classList.add("glowing-star")
+        stars[i].style.animationDelay = "0s" 
+      }
+    }
+    
+    setTimeout(typeMessage, 3500)
+  }
+
+  const message = "kanbghiiik bzaaaf<br>a ahsan bnt<br>3rft f7yati ❤️"
+  let i = 0
+  let isTag = false;
+
+  function typeMessage(){
+    let textDiv = document.getElementById("text")
+    textDiv.style.opacity = 1
+
+    function typing(){
+      if(i < message.length){
+        if(message.charAt(i) === '<') isTag = true;
+        
+        textDiv.innerHTML = message.substring(0, i + 1) + "<span class='cursor'></span>"
+        i++
+
+        if(message.charAt(i-1) === '>') isTag = false;
+        
+        let typingSpeed = isTag ? 0 : (Math.random() * 50 + 40); 
+        setTimeout(typing, typingSpeed)
+      } else {
+        textDiv.innerHTML = message
+      }
+    }
+    typing()
+  }
+
+  setTimeout(formASMAE, 2000)
 }
-
-setTimeout(formASMAE,3000);
-
 </script>
 </body>
 </html>
